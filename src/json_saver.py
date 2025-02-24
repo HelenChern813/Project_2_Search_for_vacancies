@@ -18,9 +18,10 @@ class JSONSaver(BaseJSONSaver):
     def write_file(self, vacancy_list: list) -> None:
         """Метод для записи данных в файл"""
 
-        self.vacancy_list: list = vacancy_list
-        with open(self.path_to_file + self.file_name, "w", encoding="utf-8") as file:
-            json.dump(self.vacancy_list, file, indent=4, ensure_ascii=False)
+        full_name = self.path_to_file + self.file_name
+
+        with open(full_name, "w", encoding="utf-8") as file:
+            json.dump(vacancy_list, file, indent=4, ensure_ascii=False)
 
     def add_vacancy(self, vacancies: Any) -> None:
         """Реализованный метод для добавления вакансий в файл"""

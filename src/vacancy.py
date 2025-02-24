@@ -1,26 +1,31 @@
-import json
 from typing import Any
 
 
 class Vacancy:
     """Класс обрабатвающий ваканссии"""
 
-    __slots__ = ("_id", "_name", "_url", "_salary", "_employment", "_requirement")
+    id: int
+    name: str
+    url: str
+    salary: int
+    employment: str
+    requirement: str
 
-    def __init__(self, id, name, url, salary, employment, requirement) -> None:
+    __slots__ = ("id", "name", "url", "salary", "employment", "requirement")
+
+    def __init__(self, data: dict) -> None:
         """Инициализация класса"""
 
-        self._id: int = id
-        self._name: str = name
-        self._url: str = url
-        self._salary: int = salary
-        self._employment: str = employment
-        self._requirement: str = requirement
+        for attr in self.__slots__:
+            if attr in data:
+                setattr(self, attr, data[attr])
+        self.salary = self.__validate_salary(self.salary)
+        self.requirement = data["snippet"]["requirement"]
 
     def __str__(self) -> str:
         """Строковая информация о вакансии"""
 
-        return f"ID: {self._id}, имя: {self._name}, адрес (url): {self._url}, з/п: {self._salary}, занятость: {self._employment}, описание: {self._requirement}"
+        return f"ID: {self.id}, имя: {self.name}, адрес (url): {self.url}, з/п: {self.salary}, занятость: {self.employment}, описание: {self.requirement}"
 
     @staticmethod
     def __validate_salary(salary: Any) -> int:
@@ -38,14 +43,12 @@ class Vacancy:
         else:
             return salary
 
-    @classmethod
-    def cast_to_object_list(cls, json_obj: json) -> list:
-        """Преобразование объекта JSON в объект Python"""
+    def __lt__(self, other: Any) -> Any:
+        """Сравнение зарплаты"""
 
-        object_py = []
-        for i in json_obj:
-            object_py.append(i)
-        return object_py
+        if isinstance(other, Vacancy):
+            return self.salary < other.salary
+        raise TypeError
 
     def __eq__(self, other: Any) -> Any:
         """Сравнение равенства вакансий"""
@@ -54,35 +57,9 @@ class Vacancy:
             return self.__validate_salary == other.__validate_salary
         raise TypeError
 
-    def id(self) -> int:
-        """Полуение отдельно информации про ID"""
-
-        return self._id
-
-    def name(self) -> str:
-        """Полуение отдельно информации про название"""
-
-        return self._name
-
-    def url(self) -> str:
-        """Полуение отдельно информации про адрес(url)"""
-
-        return self._url
-
-    def salary(self) -> int:
-        """Полуение отдельно информации про з/п"""
-
-        return self._salary
-
-    def requirement(self) -> str:
-        """Полуение отдельно информации про описание"""
-
-        return self._requirement
-
-    def employment(self) -> str:
-        """Полуение отдельно информации про занятость"""
-
-        return self._employment
+    def attributes(self) -> dict:
+        """ Метод для получения атрибутов, указанных в __slots__ """
+        return {attr: getattr(self, attr) for attr in self.__slots__ if hasattr(self, attr)}
 
     @staticmethod
     def filter_by_keywords(vacancies: list, keywords: list) -> list:
@@ -103,7 +80,7 @@ class Vacancy:
 
     @staticmethod
     def get_top_salary_vacancies(vacancies: list, top_n: int) -> list:
-        """Метод дл полуения топ вакансий по зарплате"""
+        """Метод для полуения топ вакансий по зарплате"""
 
         valid_vacancies = [vacancy for vacancy in vacancies if isinstance(vacancy, Vacancy)]
         sorted_vacancies = sorted(valid_vacancies, key=lambda x: x.salary, reverse=True)
