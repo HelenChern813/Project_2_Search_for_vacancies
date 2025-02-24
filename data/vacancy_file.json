@@ -1,0 +1,36 @@
+[
+    {
+        "id": "105832313",
+        "premium": false,
+        "name": "Курьер - Сборщик",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "43",
+            "name": "Калуга",
+            "url": "https://api.hh.ru/areas/43"
+        },
+        "salary": {
+            "from": 69600,
+            "to": 128750,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": false,
+        "response_url": false,
+        "sort_point_distance": false,
+        "published_at": "2024-08-15T09:04:14+0300",
+        "created_at": "2024-08-15T09:04:14+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=105832313",
+        "show_logo_in_search": false,
+        "insider_interview": false,
+        "url": "https://api.hh.ru/vacancies/105832313?host=hh.ru",
+        "alternate_url": "https://hh.ru/vacancy/105832313"
+    }
+]
